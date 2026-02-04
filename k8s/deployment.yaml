@@ -1,0 +1,59 @@
+# --- 1. GO BACKEND DEPLOYMENT ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-backend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-backend
+  template:
+    metadata:
+      labels:
+        app: go-backend
+    spec:
+      containers:
+      - name: go-container
+        image: go-backend:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+---
+# --- 2. GO BACKEND SERVICE (The internal DNS) ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-backend-service
+spec:
+  selector:
+    app: go-backend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+# --- 3. Python FRONTEND DEPLOYMENT ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamlit-app
+  template:
+    metadata:
+      labels:
+        app: streamlit-app
+    spec:
+      containers:
+      - name: streamlit-container
+        image: streamlit-frontend:v1
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: BACKEND_URL
+          value: "http://go-backend-service:8080/api/data"
+        ports:
+        - containerPort: 8501

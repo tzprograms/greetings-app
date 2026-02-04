@@ -1,0 +1,14 @@
+# Go binaries
+backend/main
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+env/
+
+# OS files
+.DS_Store
+
+# Local k8s logs/configs
+*.log
