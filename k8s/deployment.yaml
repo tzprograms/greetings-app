@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: go-container
-        image: go-backend:v1
+        image: docker.io/tejassoham/go-backend:v1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
       - name: streamlit-container
-        image: streamlit-frontend:v1
+        image: docker.io/tejassoham/streamlit-frontend:v1
         imagePullPolicy: IfNotPresent
         env:
         - name: BACKEND_URL
